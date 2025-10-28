@@ -6,12 +6,6 @@ import torch
 def load_biolaysumm(path="biolaysumm_hf"):
     return load_from_disk(path)
 
-def get_tokenizer(model_name):
-    tok = AutoTokenizer.from_pretrained(model_name, use_fast=True)
-    if tok.pad_token is None:  # GPT-2 needs a pad token
-        tok.pad_token = tok.eos_token
-    return tok
-
 rouge = evaluate.load("rouge")
 
 def compute_rouge(preds, refs):
