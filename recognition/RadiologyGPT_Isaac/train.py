@@ -1,25 +1,4 @@
 from transformers import DataCollatorForSeq2Seq, Seq2SeqTrainingArguments, Seq2SeqTrainer
-from peft import LoraConfig, get_peft_model, TaskType
-from transformers import AutoModelForSeq2SeqLM
-
-model_name = "google/flan-t5-base"
-
-model = AutoModelForSeq2SeqLM.from_pretrained(
-    model_name,
-    load_in_8bit=True,
-    device_map="auto"
-)
-
-lora_config = LoraConfig(
-    r=16, lora_alpha=32, lora_dropout=0.05,
-    target_modules=["q","v","k","o","wi","wo"],
-    bias="none",
-    task_type=TaskType.SEQ_2_SEQ_LM
-)
-
-model = get_peft_model(model, lora_config)
-model.print_trainable_parameters()
-
 
 data_collator = DataCollatorForSeq2Seq(tokenizer, model=model, padding="longest")
 
@@ -34,9 +13,42 @@ training_args = Seq2SeqTrainingArguments(
     gradient_accumulation_steps=4,   # effective batch 32
     eval_strategy="epoch",
     save_strategy="epoch",
+    logging_strategy="epoch"
     predict_with_generate=True,
     generation_max_length=128,
-    logging_steps=100,
     fp16=True,
     report_to="none"
 )
+
+import numpy as np # Make sure to import numpy at the top of your script
+
+def compute_metrics(eval_pred):
+    preds, labels = eval_pred
+
+    # Clean predictions: Replace -100 with pad_token_id
+    # preds is a numpy array. Use np.where for efficiency.
+    preds = np.where(preds != -100, preds, tokenizer.pad_token_id)
+
+    # Decode predictions
+    decoded_preds = tokenizer.batch_decode(preds, skip_special_tokens=True)
+
+    # Clean labels: Your original logic was fine, but np.where is cleaner
+    labels = np.where(labels != -100, labels, tokenizer.pad_token_id)
+
+    # Decode labels
+    decoded_labels = tokenizer.batch_decode(labels, skip_special_tokens=True)
+
+    # (Assuming compute_rouge is defined elsewhere and expects two lists of strings)
+    return compute_rouge(decoded_preds, decoded_labels)
+
+trainer = Seq2SeqTrainer(
+    model=model,
+    args=training_args,
+    train_dataset=tokenized_dataset["train"].select(range(1000)),
+    eval_dataset=tokenized_dataset["validation"].select(range(100)),
+    tokenizer=tokenizer,
+    data_collator=data_collator,
+    compute_metrics=compute_metrics,
+)
+
+trainer.train()
