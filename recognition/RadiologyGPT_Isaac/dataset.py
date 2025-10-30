@@ -1,30 +1,24 @@
 from datasets import load_dataset
-from transformers import AutoTokenizer
 
-dataset = load_dataset("BioLaySumm/BioLaySumm2025-LaymanRRG-opensource-track")
-dataset = dataset.remove_columns(["source", "images_path"])
-print(dataset)
+tokenizer = T5Tokenizer.from_pretrained(MODEL_NAME)
+DATA_NAME = "BioLaySumm/BioLaySumm2025-LaymanRRG-opensource-track"
+dataset = load_dataset(DATA_NAME)
 
-training_data = dataset["train"]
-validation_data = dataset["validation"]
-test_data = dataset["test"]
+def preprocess_function(examples):
+    """Add prefix to the sentences, tokenize the text, and set the labels"""
+    
+    # The "inputs" are the tokenized radiology reports
+    # We increase max_length as reports are longer than questions
+    inputs = [prefix + doc for doc in examples["radiology_report"]]
+    model_inputs = tokenizer(inputs, max_length=1024, truncation=True)
+    
+    # The "labels" are the tokenized layman summaries
+    labels = tokenizer(text_target=examples["layman_report"], 
+                       max_length=512, 
+                       truncation=True)
 
-model_name = "google/flan-t5-base"
-tokenizer = AutoTokenizer.from_pretrained(model_name)
-
-MAX_INPUT = 1024
-MAX_TARGET = 256
-
-def preprocess_function(batch):
-    inputs = [f"Summarize the following radiology report for a patient:\n{r}"
-              for r in batch["radiology_report"]]
-    targets = batch["layman_report"]
-
-    model_inputs = tokenizer(inputs, max_length=MAX_INPUT, truncation=True)
-    labels = tokenizer(targets, max_length=MAX_TARGET, truncation=True)
     model_inputs["labels"] = labels["input_ids"]
     return model_inputs
 
-tokenized_dataset = dataset.map(preprocess_function,
-                                batched=True,
-                                remove_columns=dataset["train"].column_names)
+# Map the preprocessing function across our dataset
+tokenized_dataset = dataset.map(preprocess_function, batched=True)
