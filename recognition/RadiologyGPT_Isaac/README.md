@@ -9,6 +9,10 @@ The problem-space was to translate radiology reports into layperson summaries. T
 # Task
 
 # Python Script Structure
+1. modules.py -
+2. dataset.py 
+3. train.py
+4. predict.py - Shows an e
 
 # Dependencies
 transformers (version 4.57.1)
