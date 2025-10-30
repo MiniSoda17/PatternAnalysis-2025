@@ -4,7 +4,7 @@ import nltk
 import numpy as np
 import evaluate
 from datasets import load_dataset
-from transformers import T5Tokenizer, T5ForConditionalGeneration
+from transformers import T5Tokenizer
 
 # --- Global Components ---
 # Download the 'punkt' resource once for sentence segmentation

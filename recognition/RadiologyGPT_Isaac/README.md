@@ -1,4 +1,37 @@
 # Radiology terminology into layperson terms
+
+# Introduction
+The problem-space was to translate radiology reports into layperson summaries. To do this, we will train a pretrained encoder-decoder LLM, specifically Flan-t5 with large amounts of data
+
+# Flan-T5 Architecture
+
+
+# Task
+
+# Python Script Structure
+
+# Dependencies
+transformers (version 4.57.1)
+datasets (version 4.3.0)
+accelerate (version 1.11.0)
+evaluate (version 0.4.6)
+bitsandbytes(version 0.48.2)
+peft (version 0.17.1)
+rouge_scores (version 0.1.2)
+nltk (version 3.9.2)
+
+# Installation
+
+# Training
+
+# Results
+
+# Running the program
+
+# Reference
+
+The use of Generative AI like Gemini and ChatGPT have been used for the learning process and code inspiration of this project
+
 Fine tune a pretrained encoder-decoder LLM such as T5 [19] or FLAN-T5 , or decoder-only LLM
 such as GPT-2 , to translate expert radiology reports into layperson summaries using the BioLaySumm dataset [Subtask 2.1 of ACL 2025 BioLaySumm workshop]. Evaluate on a held-out test split using
 ROUGE Scores (rouge1, rouge2, rougeL, rougeLsum). In your report, include model and parameter count,
