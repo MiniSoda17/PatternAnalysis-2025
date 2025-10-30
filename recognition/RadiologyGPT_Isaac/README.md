@@ -4,8 +4,7 @@
 The problem-space was to translate radiology reports into layperson summaries. To do this, we will train a pretrained encoder-decoder LLM, specifically Flan-t5 with large amounts of data
 
 # Flan-T5 Architecture
-<img width="702" height="726" alt="Screenshot 2025-10-30 at 16 00 02" src="https://github.com/user-attachments/assets/6faac108-ef84-4261-b625-34134edd7aa7" />
-
+<img width="689" height="450" alt="Screenshot 2025-10-30 at 16 15 03" src="https://github.com/user-attachments/assets/13b49202-21db-4de1-9345-ef2f3dca95a4" />
 
 # Task
 
