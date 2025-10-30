@@ -1,12 +1,20 @@
 # Radiology terminology into layperson terms
 
 # Introduction
-The problem-space was to translate radiology reports into layperson summaries. To do this, we will train a pretrained encoder-decoder LLM, specifically Flan-t5 with large amounts of data
+The problem-space was to translate radiology reports into layperson summaries. To do this, we will train a pretrained encoder-decoder LLM, specifically Flan-t5 with large amounts of data. 
 
 # Flan-T5 Architecture
+The FLAN-T5 architecture is based off the T5 architecture shown in the image below. 
 <img width="689" height="450" alt="Screenshot 2025-10-30 at 16 15 03" src="https://github.com/user-attachments/assets/13b49202-21db-4de1-9345-ef2f3dca95a4" />
 
-# Task
+# Training dataset
+The training data was acquired from the BioLaySumm-2025-Layman dataset track from the https://huggingface.co/datasets/BioLaySumm/BioLaySumm2025-LaymanRRG-opensource-track from Huggingface.
+
+The dataset contains a training, validation and test dataset. The training has 150k rows, the validation has 10k rows and the test has 10.5k rows. 
+
+Each row contains an image_path, radiology_report, layman_report column. The radiology report is a snippet of medical literature from radiologists and the layman_report is a simplified translation of it that anyone should be able to understand. 
+
+20k rows will be used for the training data and 10k will be used for the valuation data.
 
 # Python Script Structure
 1. modules.py -
@@ -27,6 +35,7 @@ nltk (version 3.9.2)
 # Installation
 
 # Training
+
 
 # Results
 
