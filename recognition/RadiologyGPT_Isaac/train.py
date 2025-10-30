@@ -1,54 +1,67 @@
-from transformers import DataCollatorForSeq2Seq, Seq2SeqTrainingArguments, Seq2SeqTrainer
+# train.py
 
-data_collator = DataCollatorForSeq2Seq(tokenizer, model=model, padding="longest")
+import os
+from transformers import Seq2SeqTrainingArguments, Seq2SeqTrainer
 
-DRIVE_PATH = "/content/drive/MyDrive/My_Project_Checkpoints/ckpt_flan_t5_lora"
+# Import components from our modular files
+from modules import get_model_components
+from dataset import load_and_tokenize_data
+from utils import compute_metrics
 
-training_args = Seq2SeqTrainingArguments(
-    output_dir=DRIVE_PATH,
-    learning_rate=2e-4,
-    num_train_epochs=1,
-    per_device_train_batch_size=4,
-    per_device_eval_batch_size=4,
-    gradient_accumulation_steps=4,   # effective batch 32
-    eval_strategy="epoch",
-    save_strategy="epoch",
-    logging_strategy="epoch",
-    predict_with_generate=True,
-    generation_max_length=128,
-    fp16=True,
-    report_to="none"
-)
+# --- Hyperparameters (Global Parameters) ---
+L_RATE = 3e-4
+BATCH_SIZE = 8
+PER_DEVICE_EVAL_BATCH = 4
+WEIGHT_DECAY = 0.01
+SAVE_TOTAL_LIM = 3
+NUM_EPOCHS = 3
+OUTPUT_DIR = "./results-biolaysumm"
 
-import numpy as np # Make sure to import numpy at the top of your script
+def main():
+    # 1. Load Model Components
+    tokenizer, model, data_collator = get_model_components()
 
-def compute_metrics(eval_pred):
-    preds, labels = eval_pred
+    # 2. Prepare Data
+    tokenized_dataset = load_and_tokenize_data(tokenizer)
 
-    # Clean predictions: Replace -100 with pad_token_id
-    # preds is a numpy array. Use np.where for efficiency.
-    preds = np.where(preds != -100, preds, tokenizer.pad_token_id)
+    # 3. Configure Training Arguments
+    training_args = Seq2SeqTrainingArguments(
+        output_dir=OUTPUT_DIR,
+        evaluation_strategy="epoch",
+        learning_rate=L_RATE,
+        per_device_train_batch_size=BATCH_SIZE,
+        per_device_eval_batch_size=PER_DEVICE_EVAL_BATCH,
+        weight_decay=WEIGHT_DECAY,
+        save_total_limit=SAVE_TOTAL_LIM,
+        num_train_epochs=NUM_EPOCHS,
+        predict_with_generate=True,
+        push_to_hub=False,
+        report_to="none" # You can change this to "all" to re-enable wandb/tensorboard
+    )
 
-    # Decode predictions
-    decoded_preds = tokenizer.batch_decode(preds, skip_special_tokens=True)
+    # 4. Initialize Trainer
+    # Pass a lambda function to `compute_metrics` to include the tokenizer
+    trainer = Seq2SeqTrainer(
+        model=model,
+        args=training_args,
+        train_dataset=tokenized_dataset["train"],
+        eval_dataset=tokenized_dataset["validation"],
+        tokenizer=tokenizer,
+        data_collator=data_collator,
+        compute_metrics=lambda p: compute_metrics(p, tokenizer=tokenizer)
+    )
 
-    # Clean labels: Your original logic was fine, but np.where is cleaner
-    labels = np.where(labels != -100, labels, tokenizer.pad_token_id)
+    # 5. Start Training!
+    print("-" * 50)
+    print("Starting Training...")
+    print("-" * 50)
+    trainer.train()
 
-    # Decode labels
-    decoded_labels = tokenizer.batch_decode(labels, skip_special_tokens=True)
+    print("\nTraining complete! Model checkpoints are saved in:", OUTPUT_DIR)
+    
+    # Save the final model for prediction
+    trainer.save_model(os.path.join(OUTPUT_DIR, "final_model"))
+    tokenizer.save_pretrained(os.path.join(OUTPUT_DIR, "final_model"))
 
-    # (Assuming compute_rouge is defined elsewhere and expects two lists of strings)
-    return compute_rouge(decoded_preds, decoded_labels)
-
-trainer = Seq2SeqTrainer(
-    model=model,
-    args=training_args,
-    train_dataset=tokenized_dataset["train"].select(range(1000)),
-    eval_dataset=tokenized_dataset["validation"].select(range(100)),
-    tokenizer=tokenizer,
-    data_collator=data_collator,
-    compute_metrics=compute_metrics,
-)
-
-trainer.train()
+if __name__ == "__main__":
+    main()
