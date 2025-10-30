@@ -16,6 +16,8 @@ Each row contains an image_path, radiology_report, layman_report column. The rad
 
 20k rows will be used for the training data and 10k will be used for the valuation data.
 
+# Training
+
 # Python Script Structure
 1. modules.py -
 2. dataset.py 
@@ -35,13 +37,18 @@ nltk (version 3.9.2)
 # Installation
 
 # Training
+| Model      | Parameters | Architecture |
+|------------|------------|--------------|
+| T5-Base    | 220M       | Encoder-Decoder |
+| FLAN-T5-Large | 780M    | Encoder-Decoder |
 
 
 # Results
 
 # Running the program
 
-# Reference
+
+# References
 
 The use of Generative AI like Gemini and ChatGPT have been used for the learning process and code inspiration of this project
 
