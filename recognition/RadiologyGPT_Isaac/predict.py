@@ -5,7 +5,6 @@ import torch, random
 # ---- CONFIG ----
 BASE_MODEL_ID = "google/flan-t5-base"
 
-# ✅ Path to the checkpoint directory (full model checkpoint from Trainer, NOT LoRA)
 DRIVE_MODEL_PATH = "./results_biolaysumm"
 
 def sample_examples(ds, n=4, seed=123):
@@ -13,7 +12,6 @@ def sample_examples(ds, n=4, seed=123):
     idx = list(range(len(ds)))
     random.shuffle(idx)
     return [ds[i] for i in idx[:n]]
-
 
 def run_flan_t5(model_dir=DRIVE_MODEL_PATH, max_new_tokens=256):
 
@@ -49,7 +47,6 @@ def run_flan_t5(model_dir=DRIVE_MODEL_PATH, max_new_tokens=256):
     scores = compute_rouge(preds, refs)
     exs = sample_examples(dataset["validation"].select(range(3)))
     return scores, preds[:len(exs)], refs[:len(exs)], exs
-
 
 if __name__ == "__main__":
     scores, preds, refs, exs = run_flan_t5()

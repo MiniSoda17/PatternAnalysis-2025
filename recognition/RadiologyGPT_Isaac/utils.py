@@ -6,16 +6,7 @@ import evaluate
 from datasets import load_dataset
 from transformers import T5Tokenizer
 
-# --- Global Components ---
-# Download the 'punkt' resource once for sentence segmentation
-try:
-    nltk.download("punkt", quiet=True)
-except LookupError:
-    # Handle the specific error you previously encountered
-    nltk.download("punkt_tab", quiet=True) 
 
-# Load the ROUGE metric
-metric = evaluate.load("rouge")
 
 # --- Preprocessing Function ---
 def preprocess_function(examples, tokenizer: T5Tokenizer, prefix: str):

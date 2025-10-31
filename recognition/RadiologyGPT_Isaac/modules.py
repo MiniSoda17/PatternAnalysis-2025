@@ -1,19 +1,14 @@
-from peft import LoraConfig, get_peft_model, TaskType
-from transformers import AutoModelForSeq2SeqLM
+from transformers import T5Tokenizer, DataCollatorForSeq2Seq
+from transformers import T5ForConditionalGeneration, Seq2SeqTrainingArguments, Seq2SeqTrainer
 
-model = AutoModelForSeq2SeqLM.from_pretrained(
-    model_name,
-    load_in_8bit=True,
-    device_map="auto"
-)
+MODEL_NAME = "google/flan-t5-base"
 
-lora_config = LoraConfig(
-    r=16, lora_alpha=32, lora_dropout=0.05,
-    target_modules=["q","v","k","o","wi","wo"],
-    bias="none",
-    task_type=TaskType.SEQ_2_SEQ_LM
-)
+tokenizer = T5Tokenizer.from_pretrained(MODEL_NAME)
 
-model = get_peft_model(model, lora_config)
-model.print_trainable_parameters()
+model = T5ForConditionalGeneration.from_pretrained(MODEL_NAME)
+data_collator = DataCollatorForSeq2Seq(tokenizer=tokenizer, model=model)
+
+
+
+prefix = "Summarize the radiology report into simple layman terms: "
 

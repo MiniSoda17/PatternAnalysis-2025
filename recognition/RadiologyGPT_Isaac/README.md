@@ -22,6 +22,7 @@ Each row contains an image_path, radiology_report, layman_report column. The rad
 
 # Training
 
+
 # Python Script Structure
 1. modules.py -
 2. dataset.py 
@@ -40,18 +41,31 @@ nltk (version 3.9.2)
 
 # Installation
 
+
 # Training
+
+These were the 
 | Hyperparamater | Description | Value |
 |----------------|-------------|-------|
 | num_epochs    | Number of training epochs   | 3 |
-| learning rate | Initial learning rate for optimizer | Encoder-Decoder |
-| batch_size | Number of batches for training | 8 | 
-| per device evaluation batch | Number of samples | 4 |
+| learning rate | Initial learning rate for optimizer | 3e-4 |
+| batch_size | Number of batches for training | 32 | 
+| per device evaluation batch | Number of samples | 32 |
 | weight decay | Regularisation to reduce large weights | 0.01 | 
 | GPU Type | The GPU used to run and train model | NVIDIA's A100 |
 | VRAM | Memory usage on app | 
 
 # Results
+The model was trained for 3 epochs with a learning rate of 3e-4 and a batch size of 32. It was trained on 20k of the dataset ()
+
+|  Epoch  | Training loss | Validation Loss | Rogue1 | Rougue2 | Rouguel | Rougelsum |
+|---------|---------------|-----------------|--------|---------|---------|-----------|
+|  1  |    0.280420   | 0.280420 |    0.535829   |  0.397830 | 0.500228 | 0.514253 |
+|  2  |    0.207000  | 0.263835 |    0.540682  |   0.405223  | 0.506848 | 0.520300 |
+|  3  |    0.181800    | 0.258859 |    0.543166  |  0.409191  | 0.509671 | 0.522787|
+
+Final Testing
+
 
 # Running the program
 
