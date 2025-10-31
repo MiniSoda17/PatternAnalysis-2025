@@ -21,28 +21,28 @@ def main():
     tokenized_dataset = load_and_tokenize_data(tokenizer)
 
     training_args = Seq2SeqTrainingArguments(
-        output_dir=OUTPUT_DIR,
+        output_dir="/content/drive/MyDrive/My_Project_Checkpoints/ckpt_flan_t5/",
         eval_strategy="epoch",
         logging_strategy="epoch",
         learning_rate=L_RATE,
-        per_device_train_batch_size=BATCH_SIZE,
-        per_device_eval_batch_size=PER_DEVICE_EVAL_BATCH,
+        per_device_train_batch_size=32,
+        per_device_eval_batch_size=32,
         weight_decay=WEIGHT_DECAY,
         save_total_limit=SAVE_TOTAL_LIM,
         num_train_epochs=NUM_EPOCHS,
         predict_with_generate=True,
         push_to_hub=False,
-        report_to="none" 
+        report_to="none"
     )
 
     trainer = Seq2SeqTrainer(
         model=model,
         args=training_args,
-        train_dataset=tokenized_dataset["train"],
-        eval_dataset=tokenized_dataset["validation"],
+        train_dataset=tokenized_dataset["train"].select(range(20000)),       # Use the 'train' split
+        eval_dataset=tokenized_dataset["validation"].select(range(5000)),  # Use the 'validation' split
         tokenizer=tokenizer,
         data_collator=data_collator,
-        compute_metrics=lambda p: compute_metrics(p, tokenizer=tokenizer)
+        compute_metrics=compute_metrics
     )
 
     print("-" * 50)

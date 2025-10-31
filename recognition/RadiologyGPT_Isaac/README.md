@@ -7,6 +7,10 @@ The problem-space was to translate radiology reports into layperson summaries. T
 The FLAN-T5 architecture is based off the T5 architecture shown in the image below. 
 <img width="689" height="450" alt="Screenshot 2025-10-30 at 16 15 03" src="https://github.com/user-attachments/assets/13b49202-21db-4de1-9345-ef2f3dca95a4" />
 
+The diagram demonstrates the encoder-decoder architecture used in the T5. A Text-to-Text Transformer. Essentially, converting text into other text. FLAN-t5 allows us to use the current T5 Architecture while having our own training on top of it. 
+
+Essentailly, the encoder on the left receives the text and input and contextualises it using the self-attention and feedforward networks
+
 # Training dataset
 The training data was acquired from the BioLaySumm-2025-Layman dataset track from the https://huggingface.co/datasets/BioLaySumm/BioLaySumm2025-LaymanRRG-opensource-track from Huggingface.
 
@@ -25,7 +29,7 @@ Each row contains an image_path, radiology_report, layman_report column. The rad
 4. predict.py - Shows an e
 
 # Dependencies
-transformers (version 4.57.1)
+transformers (version 4.57.1) 
 datasets (version 4.3.0)
 accelerate (version 1.11.0)
 evaluate (version 0.4.6)
@@ -37,11 +41,15 @@ nltk (version 3.9.2)
 # Installation
 
 # Training
-| Model      | Parameters | Architecture |
-|------------|------------|--------------|
-| T5-Base    | 220M       | Encoder-Decoder |
-| FLAN-T5-Large | 780M    | Encoder-Decoder |
-
+| Hyperparamater | Description | Value |
+|----------------|-------------|-------|
+| num_epochs    | Number of training epochs   | 3 |
+| learning rate | Initial learning rate for optimizer | Encoder-Decoder |
+| batch_size | Number of batches for training | 8 | 
+| per device evaluation batch | Number of samples | 4 |
+| weight decay | Regularisation to reduce large weights | 0.01 | 
+| GPU Type | The GPU used to run and train model | NVIDIA's A100 |
+| VRAM | Memory usage on app | 
 
 # Results
 
