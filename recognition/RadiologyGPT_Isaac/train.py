@@ -7,21 +7,13 @@ from modules import get_model_components
 from dataset import load_and_tokenize_data
 from utils import compute_metrics
 
-L_RATE = 3e-4
-BATCH_SIZE = 8
-PER_DEVICE_EVAL_BATCH = 4
-WEIGHT_DECAY = 0.01
-SAVE_TOTAL_LIM = 3
-NUM_EPOCHS = 3
-OUTPUT_DIR = "./results-biolaysumm"
-
 def main():
     tokenizer, model, data_collator = get_model_components()
 
     tokenized_dataset = load_and_tokenize_data(tokenizer)
 
     training_args = Seq2SeqTrainingArguments(
-        output_dir="/content/drive/MyDrive/My_Project_Checkpoints/ckpt_flan_t5/",
+        output_dir="./results-biolaysumn",
         eval_strategy="epoch",
         logging_strategy="epoch",
         learning_rate=L_RATE,
