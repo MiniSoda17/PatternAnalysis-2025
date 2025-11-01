@@ -33,9 +33,25 @@ def clean(sample):
     radiology_input = sample.get("radiology_report", "")
     layman_input = sample.get("layman_report", "")
     return bool(radiology_input.strip()) and bool(layman_input.strip())
-```
 
 dataset = dataset.filter(clean)
+```
+Next step, is the tokenize the samples within the dataset to get input_ids, attention_mask and label_ids. 
+
+```python
+def preprocess_function(examples, tokenizer: T5Tokenizer, prefix: str):
+    """Adds the task prefix, tokenizes the text, and sets the labels."""
+    
+    # Inputs: Report text + Prefix
+    inputs = [prefix + rad for rad in examples["radiology_report"]]
+    model_inputs = tokenizer(inputs, max_length=256, truncation=True,  padding="longest")
+    
+    # Labels: Layman summary text
+    labels = tokenizer(text_target=examples["layman_summary"], max_length=512, truncation=True, padding"longest")
+
+    model_inputs["labels"] = labels["input_ids"]
+    return model_inputs
+```
 
 
 # Python Script Structure

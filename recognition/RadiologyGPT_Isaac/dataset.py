@@ -23,15 +23,12 @@ def preprocess_function(examples, tokenizer: T5Tokenizer, prefix: str):
     """Adds the task prefix, tokenizes the text, and sets the labels."""
     
     # Inputs: Report text + Prefix
-    inputs = [prefix + doc for doc in examples["radiology_report"]]
-    model_inputs = tokenizer(inputs, max_length=1024, truncation=True)
+    inputs = [prefix + rad for rad in examples["radiology_report"]]
+    model_inputs = tokenizer(inputs, max_length=256, truncation=True,  padding="longest")
     
     # Labels: Layman summary text
-    labels = tokenizer(text_target=examples["layman_summary"], 
-                       max_length=512, 
-                       truncation=True)
+    labels = tokenizer(text_target=examples["layman_summary"], max_length=512, truncation=True, padding"longest")
 
-    # Add labels for the trainer
     model_inputs["labels"] = labels["input_ids"]
     return model_inputs
 
