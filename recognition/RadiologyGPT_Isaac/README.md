@@ -1,4 +1,4 @@
-# Radiology terminology into layperson terms
+# Radiology terminology into layperson summary
 
 By Isaac Arli - 47204296
 
