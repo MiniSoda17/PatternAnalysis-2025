@@ -16,9 +16,6 @@ Within the T5 Architecture, it contains two components, the Encoder and Decoder.
 * Decoder: Responsible for generating the output token-by-token. It uses masked self-attention to prevent tokens from seeing future tokens. This prevents "cheating" forcing the model to generate only on previous tokens. Then, it applies cross-attention, using the output from the encoder to predict the next token in the output sequence. It then undergoes auto-regressive decoding as that output is passed back into the decoder.
 * Final steps: The final steps include going throught the Linear & Softmax process. The Linear is responsible for creating an output vector containing a certain number of logits (the size of the model vocab). These logits are then converted into a probability distribution between 0 and 1. This represents the probability of each token that could be generated as the next word. 
 
-
-Essentailly, the encoder on the left receives the text and input and contextualises it using the self-attention and feedforward networks
-
 # Training dataset
 The training data was acquired from the BioLaySumm-2025-Layman dataset track from the https://huggingface.co/datasets/BioLaySumm/BioLaySumm2025-LaymanRRG-opensource-track from Huggingface.
 
@@ -28,7 +25,15 @@ Each row contains an image_path, radiology_report, layman_report column. The rad
 
 20k rows will be used for the training data and 10k will be used for the valuation data.
 
-# Training
+## Pre-Processing
+Within the dataset, every sample is cleaned from the dataset to ensure parts from the radiology_report and layman_report don't have any empty or missing fields. 
+
+def clean(sample):
+    radiology_input = sample.get("radiology_report", "")
+    layman_input = sample.get("layman_report", "")
+    return bool(radiology_input.strip()) and bool(layman_input.strip())
+
+dataset = dataset.filter(clean)
 
 
 # Python Script Structure

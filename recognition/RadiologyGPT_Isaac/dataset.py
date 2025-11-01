@@ -7,13 +7,13 @@ TASK_PREFIX = "Summarize this radiology report in plain language: "
 
 dataset = load_dataset(DATA_NAME)
 
-def clean_up(example):
-    src = example.get("radiology_report", "")
-    tgt = example.get("layman_report", "")
-    return bool(src.strip()) and bool(tgt.strip())
+def clean(sample):
+    radiology_input = sample.get("radiology_report", "")
+    layman_input = sample.get("layman_report", "")
+    return bool(radiology_input.strip()) and bool(layman_input.strip())
 
 # Filter out examples with empty or missing fields
-dataset = dataset.filter(clean_up)
+dataset = dataset.filter(clean)
 
 # Remove unused columns safely (only if they exist)
 cols_to_remove = [c for c in ["source", "images_path"] if c in dataset.column_names]
