@@ -59,10 +59,10 @@ tokenized_dataset = dataset.map(preprocess_function, batched=True)
 tokenized_dataset = tokenized_dataset.remove_columns(["radiology_report", "layman_report"])
 ```
 # Python Script Structure
-1. modules.py -
-2. dataset.py 
-3. train.py
-4. predict.py - Shows an e
+1. modules.py - Contains the base module for FLAN-T5 and other useful modules.
+2. dataset.py - Contains the original dataset and functions to preprocess data for training
+3. train.py - Contains functionality to train model with specified parameters.
+4. predict.py - Contains functionality for loading, testing the pretrained model against Rouge scoring and generating test samples
 
 # Dependencies
 transformers (version 4.57.1) \
@@ -83,7 +83,6 @@ nltk (version 3.9.2)
 | batch_size | Number of batches for training | 32 | 
 | per device evaluation batch | Number of samples | 32 |
 | weight decay | Regularisation to reduce large weights | 0.01 | 
-| predict_with_generate | whether 
 
 ## Training environment
 | Setting | Description | Value|
@@ -104,6 +103,11 @@ The model was trained for 3 epochs with a learning rate of 3e-4 and a batch size
 |  3  |    0.181800    | 0.258859 |    0.543166  |  0.409191  | 0.509671 | 0.522787|
 
 <img width="853" height="545" alt="Screenshot 2025-10-31 at 22 29 23" src="https://github.com/user-attachments/assets/1fc14cc7-f1a6-4efb-921e-6c1ced01fad5" />
+
+## Final Testing
+| Rouge1 | Rouge2 | Rougel | Rougelsum |
+|--------|---------|---------|-----------|
+| 0.7188 | 0.5298  | 0.6652  |  0.6651   |
 
 ## Sample examples
 Example 1: \
@@ -151,24 +155,14 @@ The X-ray shows signs of trapped air, a flattened muscle under the lungs, and mo
 
 ------------------------------------------------------------
 
-## Final Testing
-| Rouge1 | Rouge2 | Rougel | Rougelsum |
-|--------|---------|---------|-----------|
-| 0.7188 | 0.5298  | 0.6652  |  0.6651   |
-
 ## Error Analysis
 Overall, the model performed very well, as seen by the high Rouge scores and generated sample examples which closely matched the referenced samples. In the generated samples, there were minor differences, but these were primarily stylistic, just with different word ordering or vocab choices. It was able to convert both short complex radiology reports into longer simpler layman sentences and also convert long complex radiology reports into short and simple layman sentences, showing robust ability to handle different kinds of data. The slight variation shows there are things that could be improved, but nonetheless shows great readability. A Rougelsum of 0.6651 shows close to near accurate translation but could be slighlty improved. Future work could involve testing on larger and more varied datasets and have it actually be confirmed with radiologists to confirm translations are accurate not only in the dataset but also the model output. 
 
 # References
 
-The use of Generative AI like Gemini and ChatGPT have been used for the learning process and code inspiration of this project
+The use of Generative AI like Gemini and ChatGPT have been used for the learning process and code inspiration of this project. Websites detailing how to fine-tune a FLAN-T5 model were also used. 
 
-
-
-Tasks may include:
-* Image Segmentation
-* Object detection
-* Graph node classification
-* Image super resolution
-* Disease classification
-* Generative modelling with StyleGAN and Stable Diffusion
+References
+Hebbar, S. S. (2023, November 25). T5: Overview - Sharath S Hebbar - Medium. Medium. https://medium.com/@sharathhebbar24/t5-overview-05327690fa93 \
+Keita, Z. (2023, November 3). FLAN-T5 Tutorial: Guide and Fine-Tuning. Datacamp.com; DataCamp. https://www.datacamp.com/tutorial/flan-t5-tutorial \
+Vaswani, A., Shazeer, N., Parmar, N., Uszkoreit, J., Jones, L., Gomez, A. N., Kaiser, Ł., & Polosukhin, I. (2017). Attention is All You Need. Advances in Neural Information Processing Systems, 30, 5998–6008. https://proceedings.neurips.cc/paper/2017/hash/3f5ee243547dee91fbd053c1c4a845aa-Abstract.html
