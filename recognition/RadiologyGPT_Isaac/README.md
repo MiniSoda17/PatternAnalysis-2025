@@ -64,6 +64,11 @@ The model was trained for 3 epochs with a learning rate of 3e-4 and a batch size
 |  2  |    0.207000  | 0.263835 |    0.540682  |   0.405223  | 0.506848 | 0.520300 |
 |  3  |    0.181800    | 0.258859 |    0.543166  |  0.409191  | 0.509671 | 0.522787|
 
+<img width="853" height="545" alt="Screenshot 2025-10-31 at 22 29 23" src="https://github.com/user-attachments/assets/1fc14cc7-f1a6-4efb-921e-6c1ced01fad5" />
+
+
+
+
 Final Testing
 
 
