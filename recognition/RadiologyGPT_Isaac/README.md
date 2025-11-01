@@ -36,7 +36,9 @@ def clean(sample):
 
 dataset = dataset.filter(clean)
 ```
-Next step, is the tokenize the samples within the dataset to get input_ids, attention_mask and label_ids. This is done through the tokenizer method provided. Each of the samples from radiology report are appended with the prefix and tokenised so that model can intepret the data. The result is a tokenised dataset where every sample is a dictionary that contains the input_ids, attention_mask and label_ids. The original radiology_report and layman_report were also removed as they are no longer required.
+Next step, is the tokenize the samples within the dataset to get input_ids, attention_mask and labels. This is done through the tokenizer method provided. Each of the samples from radiology report are appended with the prefix and tokenised so that model can intepret the data. The result is a tokenised dataset where every sample is a dictionary that contains the input_ids, attention_mask and labels. The original radiology_report and layman_report were also removed as they are no longer required. This can then be passed into
+
+E.g {'input_id':[21603, 10...0, 0], 'attention_mask':[1, 1...0, 0], 'labels': [37, 810...-100, -100]}
 
 ```python
 def preprocess_function(examples, tokenizer: T5Tokenizer, prefix: str):
@@ -71,12 +73,8 @@ peft (version 0.17.1) \
 rouge_scores (version 0.1.2) \
 nltk (version 3.9.2) 
 
-# Installation
-
-
 # Training
 
-These were the 
 | Hyperparamater | Description | Value |
 |----------------|-------------|-------|
 | num_epochs    | Number of training epochs   | 3 |
@@ -85,10 +83,10 @@ These were the
 | per device evaluation batch | Number of samples | 32 |
 | weight decay | Regularisation to reduce large weights | 0.01 | 
 | GPU Type | The GPU used to run and train model | NVIDIA's A100 |
-| VRAM | Memory usage on app |       |
+| VRAM | Memory usage on app  |  15.36GB |
 
 # Results
-The model was trained for 3 epochs with a learning rate of 3e-4 and a batch size of 32. It was trained on 20k samples of the dataset and 5k of the validation samples. Then the entire validation dataset of 10k was used for the final testing
+The model was trained for 3 epochs with a learning rate of 3e-4 and a batch size of 32. It was trained on 20k samples of the dataset and 5k of the validation samples. Then the entire validation dataset of 10k was used for the final testing. The final testing used the validation dataset as the test data did not include layman_report translation data. 
 
 |  Epoch  | Training loss | Validation Loss | Rogue1 | Rougue2 | Rouguel | Rougelsum |
 |---------|---------------|-----------------|--------|---------|---------|-----------|
@@ -98,8 +96,7 @@ The model was trained for 3 epochs with a learning rate of 3e-4 and a batch size
 
 <img width="853" height="545" alt="Screenshot 2025-10-31 at 22 29 23" src="https://github.com/user-attachments/assets/1fc14cc7-f1a6-4efb-921e-6c1ced01fad5" />
 
-Sample examples
-
+## Sample examples
 Example 1: \
 Radiology Report: \
 The study is suboptimal due to poor inspiration. There are questionable faint infiltrates in the right upper and lower lobes. ...
@@ -145,17 +142,13 @@ The X-ray shows signs of trapped air, a flattened muscle under the lungs, and mo
 
 ------------------------------------------------------------
 
-Final Testing
+## Final Testing
 | Rouge1 | Rouge2 | Rougel | Rougelsum |
 |--------|---------|---------|-----------|
 | 0.7188 | 0.5298  | 0.6652  |  0.6651   |
 
-# Error Analysis
+## Error Analysis
 Overall, the model performed very well, as seen by the high Rouge scores and generated sample examples which closely matched the referenced samples. In the generated samples, there were minor differences, but these were primarily stylistic, just with different word ordering or vocab choices. It was able to convert both short complex radiology reports into longer simpler layman sentences and also convert long complex radiology reports into short and simple layman sentences, showing robust ability to handle different kinds of data. The slight variation shows there are things that could be improved, but nonetheless shows great readability. A Rougelsum of 0.6651 shows close to near accurate translation but could be slighlty improved. Future work could involve testing on larger and more varied datasets and have it actually be confirmed with radiologists to confirm translations are accurate not only in the dataset but also the model output. 
-
-
-# Running the program
-
 
 # References
 
