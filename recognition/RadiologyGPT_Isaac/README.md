@@ -30,14 +30,14 @@ Each row contains an image_path, radiology_report, layman_report column. The rad
 4. predict.py - Shows an e
 
 # Dependencies
-transformers (version 4.57.1) 
-datasets (version 4.3.0)
-accelerate (version 1.11.0)
-evaluate (version 0.4.6)
-bitsandbytes(version 0.48.2)
-peft (version 0.17.1)
-rouge_scores (version 0.1.2)
-nltk (version 3.9.2)
+transformers (version 4.57.1) \
+datasets (version 4.3.0) \
+accelerate (version 1.11.0) \
+evaluate (version 0.4.6) \
+bitsandbytes(version 0.48.2) \
+peft (version 0.17.1) \
+rouge_scores (version 0.1.2) \
+nltk (version 3.9.2) \
 
 # Installation
 
