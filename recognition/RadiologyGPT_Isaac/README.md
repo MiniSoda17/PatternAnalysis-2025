@@ -28,10 +28,12 @@ Each row contains an image_path, radiology_report, layman_report column. The rad
 ## Pre-Processing
 Within the dataset, every sample is cleaned from the dataset to ensure parts from the radiology_report and layman_report don't have any empty or missing fields. 
 
+```python
 def clean(sample):
     radiology_input = sample.get("radiology_report", "")
     layman_input = sample.get("layman_report", "")
     return bool(radiology_input.strip()) and bool(layman_input.strip())
+```
 
 dataset = dataset.filter(clean)
 
