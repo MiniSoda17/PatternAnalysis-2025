@@ -1,10 +1,8 @@
-# evaluate_and_examples.py
 from transformers import AutoTokenizer, AutoModelForSeq2SeqLM
 import torch, random
 from train import main
 import evaluate
 
-# ---- CONFIG ----
 BASE_MODEL_ID = "google/flan-t5-base"
 DRIVE_MODEL_PATH = "./results_biolaysumm"
 
@@ -43,7 +41,7 @@ def run_flan_t5(dataset, model_dir=DRIVE_MODEL_PATH, max_new_tokens=256):
 
     print(f"\n🔍 Evaluating on {len(ds)} validation samples...\n")
 
-    # Use tqdm to show progress
+    # Uses tqdm to show progress
     for ex in tqdm(ds, desc="Generating summaries", ncols=100):
         inp = tok(
             f"Summarize for a patient:\n{ex['radiology_report']}",
@@ -62,7 +60,7 @@ def run_flan_t5(dataset, model_dir=DRIVE_MODEL_PATH, max_new_tokens=256):
 
     scores = compute_rouge(preds, refs)
 
-    # Show a few random examples
+    # Shows a few random examples
     exs = sample_examples(dataset["validation"].shuffle(seed=36).select(range(6)))
     return scores, preds[:len(exs)], refs[:len(exs)], exs
 

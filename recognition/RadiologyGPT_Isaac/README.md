@@ -23,7 +23,7 @@ The dataset contains a training, validation and test dataset. The training has 1
 
 Each row contains an image_path, radiology_report, layman_report column. The radiology report is a snippet of medical literature from radiologists and the layman_report is a simplified translation of it that anyone should be able to understand. 
 
-20k rows will be used for the training data and 10k will be used for the valuation data.
+20k rows will be used for the training data and 10k will be used for the valuation data. 20k instead of the entire 150k was chosen due to the limited time and computation constraints. Using 150k would take over 15hours to train but 20k took just around 30 minutes. 
 
 ## Pre-Processing
 Within the dataset, every sample is cleaned from the dataset to ensure parts from the radiology_report and layman_report don't have any empty or missing fields. 
@@ -54,6 +54,7 @@ def preprocess_function(examples, tokenizer: T5Tokenizer, prefix: str):
     model_inputs["labels"] = labels["input_ids"]
     return model_inputs
 
+# Slightly modified than in original code
 tokenized_dataset = dataset.map(preprocess_function, batched=True)
 tokenized_dataset = tokenized_dataset.remove_columns(["radiology_report", "layman_report"])
 ```

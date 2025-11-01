@@ -11,7 +11,6 @@ def clean(sample):
     layman_input = sample.get("layman_report", "")
     return bool(radiology_input.strip()) and bool(layman_input.strip())
 
-
 def preprocess_function(examples, tokenizer: T5Tokenizer, prefix: str):
     """Adds the task prefix, tokenizes the text, and sets the labels."""
     
@@ -33,12 +32,9 @@ def load_and_tokenize_data(tokenizer):
     dataset = load_dataset(DATA_NAME)
     dataset = dataset.filter(clean)
 
-    # Use a lambda function to pass the tokenizer and prefix to the utility function
-    tokenized_dataset = dataset.map(
-        lambda x: preprocess_function(x, tokenizer=tokenizer, prefix=TASK_PREFIX), 
-        batched=True,
-        remove_columns=['radiology_report', 'layman_report', 'id']
-    )
+    # Runs the preprocess function against every sample in dataset
+    tokenized_dataset = dataset.map(preprocess_function, batched=True)
+    tokenized_dataset = tokenized_dataset.remove_columns(["radiology_report", "layman_report"])
     
     print("Dataset tokenization complete.")
     return tokenized_dataset
