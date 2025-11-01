@@ -100,35 +100,26 @@ The patient has long-term lung changes.
 Reference Summary: \
 Long-term changes in the lungs are seen.
 
---------------------------------------------------------
-Example 4: \
-Radiology Report: \
+---------------------------------------------------------
+Example 4:
+Radiology Report:
 Biapical pleural thickening. No significant radiological findings. ...
 
-Model Summary: \
+Model Summary:
 The x-ray shows signs of air being trapped in the lungs, the diaphragm is flattened, and there's more space behind the breastbone. There are hardened areas on the pleura of the left lung, which are the lining around the lungs. The left lung has lost some volume and there are linear shadows below the pleura. These findings are related to long-term inflammation due to exposure to asbestos. Looking at the previous CT scan, there are no major changes compared to the scanogram dated 3/4/2009.
 
-Reference Summary: \
+Reference Summary:
 The X-ray shows signs of trapped air, a flattened muscle under the lungs, and more space behind the breastbone. There are also hardened areas on the lung lining on the left side. The left lung has lost some volume and has some linear shadows near the outer lining. These findings are related to long-term inflammation caused by exposure to asbestos. Looking at the previous CT scan, there are no significant changes compared to the scanogram dated 3/4/2009.
-
-------------------------------------------------------------
-Example 5: \
-Radiology Report: \
-The study is suboptimal due to poor inspiration. There are questionable faint infiltrates in the right upper and lower lobes. ...
-
-Model Summary: \
-A calcified granuloma, which is a type of hardened lump, is found in the top part of the right lung.
-Reference Summary: \
-There is a calcified granuloma located at the top of the right lung.
 
 ------------------------------------------------------------
 
 Final Testing
-| Rogue1 | Rougue2 | Rouguel | Rougelsum |
+| Rouge1 | Rouge2 | Rougel | Rougelsum |
 |--------|---------|---------|-----------|
 | 0.7188 | 0.5298  | 0.6652  |  0.6651   |
 
-Error Analysis
+# Error Analysis
+Overall, the model performed very well, as seen by the high Rouge scores and generated sample examples which closely matched the referenced samples. In the generated samples, there were minor differences, but these were primarily stylistic, just with different word ordering or vocab choices. It was able to convert both short complex radiology reports into longer simpler layman sentences and also convert long complex radiology reports into short and simple layman sentences, showing robust ability to handle different kinds of data. The slight variation shows there are things that could be improved, but nonetheless shows great readability. A Rougelsum of 0.6651 shows close to near accurate translation but could be slighlty improved. Future work could involve testing on larger and more varied datasets and have it actually be confirmed with radiologists to confirm translations are accurate not only in the dataset but also the model output. 
 
 
 # Running the program
