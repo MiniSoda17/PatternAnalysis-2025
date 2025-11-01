@@ -36,7 +36,7 @@ def clean(sample):
 
 dataset = dataset.filter(clean)
 ```
-Next step, is the tokenize the samples within the dataset to get input_ids, attention_mask and labels. This is done through the tokenizer method provided. Each of the samples from radiology report are appended with the prefix and tokenised so that model can intepret the data. The result is a tokenised dataset where every sample is a dictionary that contains the input_ids, attention_mask and labels. The original radiology_report and layman_report were also removed as they are no longer required. This can then be passed into
+Next step, is the tokenize the samples within the dataset to get input_ids, attention_mask and labels. This is done through the tokenizer method provided. Each of the samples from radiology report are appended with the prefix and tokenised so that model can intepret the data. The result is a tokenised dataset where every sample is a dictionary that contains the input_ids, attention_mask and labels. The original radiology_report and layman_report were also removed as they are no longer required. This can then be passed into the training args for model training.
 
 E.g {'input_id':[21603, 10...0, 0], 'attention_mask':[1, 1...0, 0], 'labels': [37, 810...-100, -100]}
 
@@ -159,7 +159,6 @@ The X-ray shows signs of trapped air, a flattened muscle under the lungs, and mo
 Overall, the model performed very well, as seen by the high Rouge scores and generated sample examples which closely matched the referenced samples. In the generated samples, there were minor differences, but these were primarily stylistic, just with different word ordering or vocab choices. It was able to convert both short complex radiology reports into longer simpler layman sentences and also convert long complex radiology reports into short and simple layman sentences, showing robust ability to handle different kinds of data. The slight variation shows there are things that could be improved, but nonetheless shows great readability. A Rougelsum of 0.6651 shows close to near accurate translation but could be slighlty improved. Future work could involve testing on larger and more varied datasets and have it actually be confirmed with radiologists to confirm translations are accurate not only in the dataset but also the model output. 
 
 # References
-
 The use of Generative AI like Gemini and ChatGPT have been used for the learning process and code inspiration of this project. Websites detailing how to fine-tune a FLAN-T5 model were also used. 
 
 References
