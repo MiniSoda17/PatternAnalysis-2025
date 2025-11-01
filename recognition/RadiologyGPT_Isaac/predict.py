@@ -7,6 +7,12 @@ BASE_MODEL_ID = "google/flan-t5-base"
 
 DRIVE_MODEL_PATH = "./results_biolaysumm"
 
+def compute_rouge(preds, refs):
+    # preds/refs are lists[str]
+    res = rouge.compute(predictions=preds, references=refs, use_stemmer=True)
+    # keep the four required
+    return {k: float(res[k]) for k in ["rouge1","rouge2","rougeL","rougeLsum"]}
+
 def sample_examples(ds, n=4, seed=123):
     random.seed(seed)
     idx = list(range(len(ds)))

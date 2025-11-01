@@ -36,9 +36,6 @@ def compute_metrics(eval_preds, tokenizer: T5Tokenizer):
 
     result = metric.compute(predictions=decoded_preds, references=decoded_labels, use_stemmer=True)
     
-    # Format the results nicely (e.g., to only show ROUGE-Lsum F1 score)
-    # result = {k: round(v * 100, 4) for k, v in result.items()}
-    
     return result
 
 def main():
@@ -64,8 +61,8 @@ def main():
     trainer = Seq2SeqTrainer(
         model=model,
         args=training_args,
-        train_dataset=tokenized_dataset["train"].select(range(20000)),       # Use the 'train' split
-        eval_dataset=tokenized_dataset["validation"].select(range(5000)),  # Use the 'validation' split
+        train_dataset=tokenized_dataset["train"].select(range(20000)),      
+        eval_dataset=tokenized_dataset["validation"].select(range(5000)), 
         tokenizer=tokenizer,
         data_collator=data_collator,
         compute_metrics=compute_metrics

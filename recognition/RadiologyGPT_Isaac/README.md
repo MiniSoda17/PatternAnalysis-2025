@@ -1,13 +1,19 @@
 # Radiology terminology into layperson terms
 
+By Isaac Arli - 47204296
+
 # Introduction
-The problem-space was to translate radiology reports into layperson summaries. To do this, we will train a pretrained encoder-decoder LLM, specifically Flan-t5 with large amounts of data. 
+The problem-space is to translate radiology reports into layperson summaries. To do this, we will train and fine-tune a pretrained encoder-decoder model, specifically the T5 transformer using the BioLaySumm dataset from Huggingface. The results will then be calculated using Rouge and we will test the output of our trained model
 
 # Flan-T5 Architecture
 The FLAN-T5 architecture is based off the T5 architecture shown in the image below. 
 <img width="689" height="450" alt="Screenshot 2025-10-30 at 16 15 03" src="https://github.com/user-attachments/assets/13b49202-21db-4de1-9345-ef2f3dca95a4" />
 
 The diagram demonstrates the encoder-decoder architecture used in the T5. A Text-to-Text Transformer. Essentially, converting text into other text. FLAN-t5 allows us to use the current T5 Architecture while having our own training on top of it. 
+
+Within the T5 Architecture, it contains two components, the Encoder and Decoder. 
+* Encoder: Responsible for converting input text into a sequence of contextual vectors through a series of self-attention and feed-forward networks. The result is then fed onto the Decoder for generation training. 
+* Decoder: Responsible for generating the output token-by-token. 
 
 Essentailly, the encoder on the left receives the text and input and contextualises it using the self-attention and feedforward networks
 
@@ -129,10 +135,7 @@ Overall, the model performed very well, as seen by the high Rouge scores and gen
 
 The use of Generative AI like Gemini and ChatGPT have been used for the learning process and code inspiration of this project
 
-Fine tune a pretrained encoder-decoder LLM such as T5 [19] or FLAN-T5 , or decoder-only LLM
-such as GPT-2 , to translate expert radiology reports into layperson summaries using the BioLaySumm dataset [Subtask 2.1 of ACL 2025 BioLaySumm workshop]. Evaluate on a held-out test split using
-ROUGE Scores (rouge1, rouge2, rougeL, rougeLsum). In your report, include model and parameter count,
-fine-tuning strategy (full vs parameter-efficient such as LoRA), GPU type, VRAM, epochs, and total training time. Also, include 3–5 representative input–output examples with a short error analysis paragraph.
+
 
 Tasks may include:
 * Image Segmentation

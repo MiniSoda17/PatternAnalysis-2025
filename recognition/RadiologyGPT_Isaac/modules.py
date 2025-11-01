@@ -8,7 +8,5 @@ tokenizer = T5Tokenizer.from_pretrained(MODEL_NAME)
 model = T5ForConditionalGeneration.from_pretrained(MODEL_NAME)
 data_collator = DataCollatorForSeq2Seq(tokenizer=tokenizer, model=model)
 
-
-
 prefix = "Summarize the radiology report into simple layman terms: "
 
