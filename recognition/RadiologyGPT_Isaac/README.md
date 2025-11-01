@@ -85,6 +85,7 @@ nltk (version 3.9.2)
 | weight decay | Regularisation to reduce large weights | 0.01 | 
 | predict_with_generate | whether 
 
+## Training environment
 | Setting | Description | Value|
 |---------|-------------|------|
 | Model type | The original model chosen to train | FLAN-T5-Base | 
