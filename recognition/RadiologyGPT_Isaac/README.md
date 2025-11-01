@@ -85,10 +85,10 @@ These were the
 | per device evaluation batch | Number of samples | 32 |
 | weight decay | Regularisation to reduce large weights | 0.01 | 
 | GPU Type | The GPU used to run and train model | NVIDIA's A100 |
-| VRAM | Memory usage on app | 
+| VRAM | Memory usage on app |       |
 
 # Results
-The model was trained for 3 epochs with a learning rate of 3e-4 and a batch size of 32. It was trained on 20k of the dataset ()
+The model was trained for 3 epochs with a learning rate of 3e-4 and a batch size of 32. It was trained on 20k samples of the dataset and 5k of the validation samples. Then the entire validation dataset of 10k was used for the final testing
 
 |  Epoch  | Training loss | Validation Loss | Rogue1 | Rougue2 | Rouguel | Rougelsum |
 |---------|---------------|-----------------|--------|---------|---------|-----------|

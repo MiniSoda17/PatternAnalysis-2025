@@ -5,7 +5,6 @@ from transformers import Seq2SeqTrainingArguments, Seq2SeqTrainer
 
 from modules import get_model_components
 from dataset import load_and_tokenize_data
-from utils import compute_metrics
 
 OUTPUT_DIR = "./results-biolaysumn"
 
@@ -78,6 +77,3 @@ def main():
     # Save the final model for prediction
     trainer.save_model(os.path.join(OUTPUT_DIR, "final_model"))
     tokenizer.save_pretrained(os.path.join(OUTPUT_DIR, "final_model"))
-
-if __name__ == "__main__":
-    main()
