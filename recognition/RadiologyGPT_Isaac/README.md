@@ -66,13 +66,8 @@ The model was trained for 3 epochs with a learning rate of 3e-4 and a batch size
 
 <img width="853" height="545" alt="Screenshot 2025-10-31 at 22 29 23" src="https://github.com/user-attachments/assets/1fc14cc7-f1a6-4efb-921e-6c1ced01fad5" />
 
-Final Testing
-| Rogue1 | Rougue2 | Rouguel | Rougelsum |
-|--------|---------|---------|-----------|
-| 0.7188 | 0.5298  | 0.6652  |  0.6651   |
-
 Sample examples
-------------------------------------------------------------
+
 Example 1: \
 Radiology Report: \
 The study is suboptimal due to poor inspiration. There are questionable faint infiltrates in the right upper and lower lobes. ...
@@ -104,6 +99,37 @@ The patient has long-term lung changes.
 
 Reference Summary: \
 Long-term changes in the lungs are seen.
+
+--------------------------------------------------------
+Example 4: \
+Radiology Report: \
+Biapical pleural thickening. No significant radiological findings. ...
+
+Model Summary: \
+The x-ray shows signs of air being trapped in the lungs, the diaphragm is flattened, and there's more space behind the breastbone. There are hardened areas on the pleura of the left lung, which are the lining around the lungs. The left lung has lost some volume and there are linear shadows below the pleura. These findings are related to long-term inflammation due to exposure to asbestos. Looking at the previous CT scan, there are no major changes compared to the scanogram dated 3/4/2009.
+
+Reference Summary: \
+The X-ray shows signs of trapped air, a flattened muscle under the lungs, and more space behind the breastbone. There are also hardened areas on the lung lining on the left side. The left lung has lost some volume and has some linear shadows near the outer lining. These findings are related to long-term inflammation caused by exposure to asbestos. Looking at the previous CT scan, there are no significant changes compared to the scanogram dated 3/4/2009.
+
+------------------------------------------------------------
+Example 5: \
+Radiology Report: \
+The study is suboptimal due to poor inspiration. There are questionable faint infiltrates in the right upper and lower lobes. ...
+
+Model Summary: \
+A calcified granuloma, which is a type of hardened lump, is found in the top part of the right lung.
+Reference Summary: \
+There is a calcified granuloma located at the top of the right lung.
+
+------------------------------------------------------------
+
+Final Testing
+| Rogue1 | Rougue2 | Rouguel | Rougelsum |
+|--------|---------|---------|-----------|
+| 0.7188 | 0.5298  | 0.6652  |  0.6651   |
+
+Error Analysis
+
 
 # Running the program
 
