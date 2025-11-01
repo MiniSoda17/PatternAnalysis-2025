@@ -36,7 +36,7 @@ def clean(sample):
 
 dataset = dataset.filter(clean)
 ```
-Next step, is the tokenize the samples within the dataset to get input_ids, attention_mask and label_ids. 
+Next step, is the tokenize the samples within the dataset to get input_ids, attention_mask and label_ids. This is done through the tokenizer method provided. Each of the samples from radiology report are appended with the prefix and tokenised so that model can intepret the data. The result is a tokenised dataset where every sample is a dictionary that contains the input_ids, attention_mask and label_ids. The original radiology_report and layman_report were also removed as they are no longer required.
 
 ```python
 def preprocess_function(examples, tokenizer: T5Tokenizer, prefix: str):
@@ -47,13 +47,14 @@ def preprocess_function(examples, tokenizer: T5Tokenizer, prefix: str):
     model_inputs = tokenizer(inputs, max_length=256, truncation=True,  padding="longest")
     
     # Labels: Layman summary text
-    labels = tokenizer(text_target=examples["layman_summary"], max_length=512, truncation=True, padding"longest")
+    labels = tokenizer(text_target=examples["layman_report"], max_length=128, truncation=True, padding"longest")
 
     model_inputs["labels"] = labels["input_ids"]
     return model_inputs
+
+tokenized_dataset = dataset.map(preprocess_function, batched=True)
+tokenized_dataset = tokenized_dataset.remove_columns(["radiology_report", "layman_report"])
 ```
-
-
 # Python Script Structure
 1. modules.py -
 2. dataset.py 

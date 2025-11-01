@@ -1,5 +1,6 @@
 from datasets import load_dataset
 from utils import preprocess_function
+from transformers import T5Tokenizer
 
 # --- Global Constants ---
 DATA_NAME = "BioLaySumm/BioLaySumm2025-LaymanRRG-opensource-track"
@@ -24,10 +25,10 @@ def preprocess_function(examples, tokenizer: T5Tokenizer, prefix: str):
     
     # Inputs: Report text + Prefix
     inputs = [prefix + rad for rad in examples["radiology_report"]]
-    model_inputs = tokenizer(inputs, max_length=256, truncation=True,  padding="longest")
+    model_inputs = tokenizer(inputs, max_length=256, truncation=True, padding="longest")
     
     # Labels: Layman summary text
-    labels = tokenizer(text_target=examples["layman_summary"], max_length=512, truncation=True, padding"longest")
+    labels = tokenizer(text_target=examples["layman_report"], max_length=128, truncation=True, padding="longest")
 
     model_inputs["labels"] = labels["input_ids"]
     return model_inputs
