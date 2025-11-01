@@ -3,7 +3,7 @@
 By Isaac Arli - 47204296
 
 # Introduction
-The problem-space is to translate radiology reports into layperson summaries. To do this, we will train and fine-tune a pretrained encoder-decoder model, specifically the T5 transformer using the BioLaySumm dataset from Huggingface. The results will then be calculated using Rouge and we will test the output of our trained model
+The problem-space is to translate complex radiology reports into layperson summaries for the normal person to understand. To do this, we will train and fine-tune a pretrained encoder-decoder model, specifically the T5 transformer using the BioLaySumm dataset from Huggingface. The results will then be calculated using Rouge and we will test the output of our trained model with example inputs and comparing them to the ground truth references.
 
 # Flan-T5 Architecture
 The FLAN-T5 architecture is based off the T5 architecture shown in the image below. 
@@ -13,7 +13,9 @@ The diagram demonstrates the encoder-decoder architecture used in the T5. A Text
 
 Within the T5 Architecture, it contains two components, the Encoder and Decoder. 
 * Encoder: Responsible for converting input text into a sequence of contextual vectors through a series of self-attention and feed-forward networks. The result is then fed onto the Decoder for generation training. 
-* Decoder: Responsible for generating the output token-by-token. 
+* Decoder: Responsible for generating the output token-by-token. It uses masked self-attention to prevent tokens from seeing future tokens. This prevents "cheating" forcing the model to generate only on previous tokens. Then, it applies cross-attention, using the output from the encoder to predict the next token in the output sequence. It then undergoes auto-regressive decoding as that output is passed back into the decoder.
+* Final steps: The final steps include going throught the Linear & Softmax process. The Linear is responsible for creating an output vector containing a certain number of logits (the size of the model vocab). These logits are then converted into a probability distribution between 0 and 1. This represents the probability of each token that could be generated as the next word. 
+
 
 Essentailly, the encoder on the left receives the text and input and contextualises it using the self-attention and feedforward networks
 
