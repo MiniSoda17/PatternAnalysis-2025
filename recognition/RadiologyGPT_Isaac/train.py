@@ -43,7 +43,7 @@ def main():
     tokenized_dataset = load_and_tokenize_data(tokenizer)
 
     training_args = Seq2SeqTrainingArguments(
-        output_dir="./results-biolaysumn",
+        output_dir="./results-biolaysumm",
         eval_strategy="epoch",
         logging_strategy="epoch",
         learning_rate=3e-4,

@@ -2,26 +2,28 @@
 from transformers import AutoTokenizer, AutoModelForSeq2SeqLM
 import torch, random
 from train import main
+import evaluate
 
 # ---- CONFIG ----
 BASE_MODEL_ID = "google/flan-t5-base"
-
 DRIVE_MODEL_PATH = "./results_biolaysumm"
 
+rouge = evaluate.load("rouge")
+
 def compute_rouge(preds, refs):
-    # preds/refs are lists[str]
+    """ Computes the rouge score by comparing model output and reference output"""
     res = rouge.compute(predictions=preds, references=refs, use_stemmer=True)
-    # keep the four required
+
     return {k: float(res[k]) for k in ["rouge1","rouge2","rougeL","rougeLsum"]}
 
 def sample_examples(ds, n=5, seed=123):
+    """ Chooses a certain number of examples to test on trained model"""
     random.seed(seed)
     idx = list(range(len(ds)))
     random.shuffle(idx)
     return [ds[i] for i in idx[:n]]
 
-
-def run_flan_t5(model_dir=DRIVE_MODEL_PATH, max_new_tokens=256):
+def run_flan_t5(dataset, model_dir=DRIVE_MODEL_PATH, max_new_tokens=256):
     # ---- Load tokenizer ----
     tok = AutoTokenizer.from_pretrained(BASE_MODEL_ID, use_fast=True)
 
@@ -35,7 +37,7 @@ def run_flan_t5(model_dir=DRIVE_MODEL_PATH, max_new_tokens=256):
     model.to(device).eval()
 
     # ---- Load dataset ----
-    ds = dataset["validation"].select(range(10))
+    ds = dataset["validation"]
 
     preds, refs = [], []
 

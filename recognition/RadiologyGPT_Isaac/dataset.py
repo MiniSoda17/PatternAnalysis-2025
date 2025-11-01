@@ -6,19 +6,11 @@ from transformers import T5Tokenizer
 DATA_NAME = "BioLaySumm/BioLaySumm2025-LaymanRRG-opensource-track"
 TASK_PREFIX = "Summarize this radiology report in plain language: "
 
-dataset = load_dataset(DATA_NAME)
-
 def clean(sample):
     radiology_input = sample.get("radiology_report", "")
     layman_input = sample.get("layman_report", "")
     return bool(radiology_input.strip()) and bool(layman_input.strip())
 
-# Filter out examples with empty or missing fields
-dataset = dataset.filter(clean)
-
-# Remove unused columns safely (only if they exist)
-cols_to_remove = [c for c in ["source", "images_path"] if c in dataset.column_names]
-dataset = dataset.remove_columns(cols_to_remove)
 
 def preprocess_function(examples, tokenizer: T5Tokenizer, prefix: str):
     """Adds the task prefix, tokenizes the text, and sets the labels."""
@@ -39,6 +31,7 @@ def load_and_tokenize_data(tokenizer):
     """
     print(f"Loading dataset: {DATA_NAME}")
     dataset = load_dataset(DATA_NAME)
+    dataset = dataset.filter(clean)
 
     # Use a lambda function to pass the tokenizer and prefix to the utility function
     tokenized_dataset = dataset.map(
