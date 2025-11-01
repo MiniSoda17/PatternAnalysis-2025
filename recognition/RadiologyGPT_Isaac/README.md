@@ -83,11 +83,18 @@ nltk (version 3.9.2)
 | batch_size | Number of batches for training | 32 | 
 | per device evaluation batch | Number of samples | 32 |
 | weight decay | Regularisation to reduce large weights | 0.01 | 
+| predict_with_generate | whether 
+
+| Setting | Description | Value|
+|---------|-------------|------|
+| Model type | The original model chosen to train | FLAN-T5-Base | 
 | GPU Type | The GPU used to run and train model | NVIDIA's A100 |
 | VRAM | Memory usage on app  |  15.36GB |
+| Framework | Library used for model fine-tuning | PyTorch
+| Runtime | Execution environment | Google Colab | 
 
 # Results
-The model was trained for 3 epochs with a learning rate of 3e-4 and a batch size of 32. It was trained on 20k samples of the dataset and 5k of the validation samples. Then the entire validation dataset of 10k was used for the final testing. The final testing used the validation dataset as the test data did not include layman_report translation data. 
+The model was trained for 3 epochs with a learning rate of 3e-4 and a batch size of 32. It was trained on 20k samples of the dataset and 5k of the validation samples. It ran for a total of 29 minutes and 14 seconds. Then the entire validation dataset of 10k was used for the final testing which took 2hrs and 15min. The final testing used the validation dataset as the test data did not include layman_report translation data. 
 
 |  Epoch  | Training loss | Validation Loss | Rogue1 | Rougue2 | Rouguel | Rougelsum |
 |---------|---------------|-----------------|--------|---------|---------|-----------|
