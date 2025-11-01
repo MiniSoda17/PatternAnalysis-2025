@@ -3,7 +3,7 @@
 By Isaac Arli - 47204296
 
 # Introduction
-The problem-space is to translate complex radiology reports into layperson summaries for the normal person to understand. To do this, we will train and fine-tune a pretrained encoder-decoder model, specifically the T5 transformer using the BioLaySumm dataset from Huggingface. The results will then be calculated using Rouge and we will test the output of our trained model with example inputs and comparing them to the ground truth references.
+The problem-space is to translate complex radiology reports into layperson summaries for the normal person to understand. To do this, we will train and fine-tune a pretrained encoder-decoder model, specifically the FLAN-T5-base model using the BioLaySumm dataset from Huggingface. The results will then be calculated using Rouge and we will test the output of our trained model with example inputs and comparing them to the ground truth references.
 
 # Flan-T5 Architecture
 The FLAN-T5 architecture is based off the T5 architecture shown in the image below. 
@@ -29,12 +29,12 @@ Each row contains an image_path, radiology_report, layman_report column. The rad
 Within the dataset, every sample is cleaned from the dataset to ensure parts from the radiology_report and layman_report don't have any empty or missing fields. 
 
 ```python
-def clean(sample):
+def remove_bad_data(sample):
     radiology_input = sample.get("radiology_report", "")
     layman_input = sample.get("layman_report", "")
     return bool(radiology_input.strip()) and bool(layman_input.strip())
 
-dataset = dataset.filter(clean)
+dataset = dataset.filter(remove_bad_data)
 ```
 Next step, is the tokenize the samples within the dataset to get input_ids, attention_mask and labels. This is done through the tokenizer method provided. Each of the samples from radiology report are appended with the prefix and tokenised so that model can intepret the data. The result is a tokenised dataset where every sample is a dictionary that contains the input_ids, attention_mask and labels. The original radiology_report and layman_report were also removed as they are no longer required. This can then be passed into the training args for model training.
 

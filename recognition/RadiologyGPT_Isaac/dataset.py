@@ -6,7 +6,7 @@ from transformers import T5Tokenizer
 DATA_NAME = "BioLaySumm/BioLaySumm2025-LaymanRRG-opensource-track"
 TASK_PREFIX = "Summarize this radiology report in plain language: "
 
-def clean(sample):
+def remove_bad_data(sample):
     radiology_input = sample.get("radiology_report", "")
     layman_input = sample.get("layman_report", "")
     return bool(radiology_input.strip()) and bool(layman_input.strip())
@@ -30,7 +30,7 @@ def load_and_tokenize_data(tokenizer):
     """
     print(f"Loading dataset: {DATA_NAME}")
     dataset = load_dataset(DATA_NAME)
-    dataset = dataset.filter(clean)
+    dataset = dataset.filter(remove_bad_data)
 
     # Runs the preprocess function against every sample in dataset
     tokenized_dataset = dataset.map(preprocess_function, batched=True)
