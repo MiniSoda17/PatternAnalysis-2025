@@ -37,7 +37,7 @@ evaluate (version 0.4.6) \
 bitsandbytes(version 0.48.2) \
 peft (version 0.17.1) \
 rouge_scores (version 0.1.2) \
-nltk (version 3.9.2) \
+nltk (version 3.9.2) 
 
 # Installation
 
@@ -72,7 +72,7 @@ Final Testing
 | 0.7188 | 0.5298  | 0.6652  |  0.6651   |
 
 Sample examples
-
+------------------------------------------------------------
 Example 1:
 Radiology Report:
 The study is suboptimal due to poor inspiration. There are questionable faint infiltrates in the right upper and lower lobes. ...
@@ -80,8 +80,8 @@ Model Summary:
 The chest x-ray shows a lot of trapped air. There are long-term changes at the top of both lungs. The upper back is curved more than usual. There is no sign of air in the lungs.
 Reference Summary:
 The chest shows a large amount of trapped air. There are long-term changes at the top of both lungs. The upper back is curved outward. There is no sign of air in the space around the lungs.
-------------------------------------------------------------
 
+------------------------------------------------------------
 Example 2:
 Radiology Report:
 Suboptimal study. No clear evidence of pneumothorax is identified. Increased density in the right base is likely related to atelectasis, consolidation, or pleural effusion. Bilateral pleural effusion is present. ...
@@ -89,8 +89,8 @@ Model Summary:
 A central venous catheter is going through the left jugular vein and its tip is in the superior vena cava. Everything else looks the same as before.
 Reference Summary:
 A central venous catheter is going through the left jugular vein and its tip is in the superior vena cava. Everything else is the same as before.
-------------------------------------------------------------
 
+--------------------------------------------------------
 Example 3:
 Radiology Report:
 Technique performed: non-contrast CT of the chest with helical acquisition. Transverse reconstructions of 1mm with a lung filter and 1mm with a mediastinal filter. Patchy ground-glass opacities and small peripheral consolidations, as well as signs of organization with subpleural lines in posterior segments. Findings suggestive of evolving COVID-19 infection with signs of organization. No lymphaden ...
