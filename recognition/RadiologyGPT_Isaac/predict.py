@@ -66,6 +66,7 @@ def run_flan_t5(dataset, model_dir=DRIVE_MODEL_PATH, max_new_tokens=256):
 
 
 if __name__ == "__main__":
+    """ Responsible for running the training and prediction of pretrained model """
     main()
     scores, preds, refs, exs = run_flan_t5()
 

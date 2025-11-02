@@ -2,7 +2,6 @@ from datasets import load_dataset
 from utils import preprocess_function
 from transformers import T5Tokenizer
 
-# --- Global Constants ---
 DATA_NAME = "BioLaySumm/BioLaySumm2025-LaymanRRG-opensource-track"
 TASK_PREFIX = "Summarize this radiology report in plain language: "
 

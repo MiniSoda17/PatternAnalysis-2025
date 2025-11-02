@@ -1,8 +1,10 @@
-# train.py
-
+import pandas as pd
+import matplotlib.pyplot as plt
 import os
+import nltk
+import evaluate
 from transformers import Seq2SeqTrainingArguments, Seq2SeqTrainer
-
+from transformers import T5Tokenizer
 from modules import get_model_components
 from dataset import load_and_tokenize_data
 
@@ -37,7 +39,27 @@ def compute_metrics(eval_preds, tokenizer: T5Tokenizer):
     
     return result
 
+def plot_loss_graph(trainer):
+    """ Responsible for plotting the loss graph of training and validation during training of model """
+    log_history = trainer.state.log_history
+    log_df = pd.DataFrame(log_history)
+    train_loss_df = log_df[log_df['loss'].notna()]
+    eval_loss_df = log_df[log_df['eval_loss'].notna()]
+
+    plt.figure(figsize=(10, 6))
+
+    plt.plot(train_loss_df['step'], train_loss_df['loss'], label='Training Loss')
+    plt.plot(eval_loss_df['step'], eval_loss_df['eval_loss'], label='Validation Loss', marker='o')
+
+    plt.title('Training and Validation Loss Over Steps')
+    plt.xlabel('Training Steps')
+    plt.ylabel('Loss')
+    plt.legend()
+    plt.grid(True)
+    plt.show()
+
 def main():
+    """ Runs the entire training loop """
     tokenizer, model, data_collator = get_model_components()
 
     tokenized_dataset = load_and_tokenize_data(tokenizer)
@@ -60,8 +82,8 @@ def main():
     trainer = Seq2SeqTrainer(
         model=model,
         args=training_args,
-        train_dataset=tokenized_dataset["train"].select(range(20000)),      
-        eval_dataset=tokenized_dataset["validation"].select(range(5000)), 
+        train_dataset=tokenized_dataset["train"].select(range(20000)),     # Using subset of the full 150k training dataset 
+        eval_dataset=tokenized_dataset["validation"].select(range(5000)),  # Using subset of the full 10k validation dataset
         tokenizer=tokenizer,
         data_collator=data_collator,
         compute_metrics=compute_metrics
@@ -77,3 +99,5 @@ def main():
     # Save the final model for prediction
     trainer.save_model(os.path.join(OUTPUT_DIR, "final_model"))
     tokenizer.save_pretrained(os.path.join(OUTPUT_DIR, "final_model"))
+
+    plot_loss_graph(trainer);
