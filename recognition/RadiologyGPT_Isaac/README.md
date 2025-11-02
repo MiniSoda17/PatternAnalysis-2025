@@ -84,14 +84,18 @@ nltk (version 3.9.2)
 | per device evaluation batch | Number of samples | 32 |
 | weight decay | Regularisation to reduce large weights | 0.01 | 
 
+The above parameters were chosen to have a balance of training stability, computational efficiency, and model performance during the fine-tuning of the FLAN-T5 model. The model converged well and showed significant improvements with number of epochs at 3 as 1 epoch showed little improvement and 5 epochs did not have much of a significant improvement. The learning rate of of 3e-4 was a good balance between stability and speed. Learning rates lower resulted in slower learning and higher occasionally led to unstable pattern rates. Batch size of 32 was chosen as the resources were able to handle larger batches instead of just 8 and 16. 
+
 ## Training environment
 | Setting | Description | Value|
 |---------|-------------|------|
 | Model type | The original model chosen to train | FLAN-T5-Base | 
 | GPU Type | The GPU used to run and train model | NVIDIA's A100 |
 | VRAM | Memory usage on app  |  15.36GB |
-| Framework | Library used for model fine-tuning | PyTorch
+| Framework | Library used for model fine-tuning | PyTorch |
 | Runtime | Execution environment | Google Colab | 
+
+
 
 # Results
 The model was trained for 3 epochs with a learning rate of 3e-4 and a batch size of 32. It was trained on 20k samples of the dataset and 5k of the validation samples. It ran for a total of 29 minutes and 14 seconds. Then the entire validation dataset of 10k was used for the final testing which took 2hrs and 15min. The final testing used the validation dataset as the test data did not include layman_report translation data. 
