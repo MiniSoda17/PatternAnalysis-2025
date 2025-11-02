@@ -84,7 +84,7 @@ nltk (version 3.9.2)
 | per device evaluation batch | Number of samples | 32 |
 | weight decay | Regularisation to reduce large weights | 0.01 | 
 
-The above parameters were chosen to have a balance of training stability, computational efficiency, and model performance during the fine-tuning of the FLAN-T5 model. The model converged well and showed significant improvements with number of epochs at 3 as 1 epoch showed little improvement and 5 epochs did not have much of a significant improvement. The learning rate of of 3e-4 was a good balance between stability and speed. Learning rates lower resulted in slower learning and higher occasionally led to unstable pattern rates. Batch size of 32 was chosen as the resources were able to handle larger batches instead of just 8 and 16. 
+The above parameters were chosen to have a balance of training stability, computational efficiency, and model performance during the fine-tuning of the FLAN-T5 model. The model converged well and showed significant improvements with number of epochs at 3 as 1 epoch is not enough to improve the model and 5 epochs did not have much of a significant improvement after 3. The learning rate of of 3e-4 was a good balance between stability and speed. Learning rates lower resulted in slower learning and higher occasionally led to unstable pattern rates. Batch size of 32 was chosen as the resources were able to handle larger batches instead of just 8 and 16. 
 
 ## Training environment
 | Setting | Description | Value|
@@ -95,7 +95,7 @@ The above parameters were chosen to have a balance of training stability, comput
 | Framework | Library used for model fine-tuning | PyTorch |
 | Runtime | Execution environment | Google Colab | 
 
-
+The following settings were chosen for the training environment due to a number of factors such as resources available, computational efficiency and time available. The FLAN-T5-Base architecture was chosen, a 250-million-parameter sequence to sequence trainer. It had a combination of not being too weak but also not taking too many resources. Google Colab was chosen as it was the most convenient to run my code and make changes to specific models. Rangpur had issues with long queue times and network issues. Colab also had a range of GPU's to be selected and NVIDIA's A100 GPU was chosen which provided the highest memory bandwidth and tensor-core accelaration for fine-tuning a language model. 
 
 # Results
 The model was trained for 3 epochs with a learning rate of 3e-4 and a batch size of 32. It was trained on 20k samples of the dataset and 5k of the validation samples. It ran for a total of 29 minutes and 14 seconds. Then the entire validation dataset of 10k was used for the final testing which took 2hrs and 15min. The final testing used the validation dataset as the test data did not include layman_report translation data. 
