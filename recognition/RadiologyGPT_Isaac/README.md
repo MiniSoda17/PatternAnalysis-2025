@@ -3,7 +3,7 @@
 By Isaac Arli - 47204296
 
 # Introduction
-The problem-space is to translate complex radiology reports into layperson summaries for the normal person to understand. To do this, we will train and fine-tune a pretrained encoder-decoder model, specifically the FLAN-T5-base model using the BioLaySumm dataset from Huggingface. The results will then be calculated using Rouge and we will test the output of our trained model with example inputs and comparing them to the ground truth references.
+Radiology reports can be often hard to understand for the average person as it contains complex terminology and insights. The problem-space is to translate complex radiology reports into layperson summaries for any normal person to understand. To do this, we will train and fine-tune a pretrained encoder-decoder model, specifically the FLAN-T5-base model using the BioLaySumm dataset from Huggingface. the BioLaySumm dataset contains radiology reports and the translation into layperson summaries. The goal will be to be able to convert any radiology report into a layperson translation using our model. The results will then be calculated using Rouge and we will test the output of our trained model with example inputs and comparing them to the ground truth references. Rouge is a specified testing system to see how well two pieces of language compare and are similar. 
 
 # Flan-T5 Architecture
 The FLAN-T5 architecture is based off the T5 architecture shown in the image below. 
@@ -23,7 +23,9 @@ The dataset contains a training, validation and test dataset. The training has 1
 
 Each row contains an image_path, radiology_report, layman_report column. The radiology report is a snippet of medical literature from radiologists and the layman_report is a simplified translation of it that anyone should be able to understand. 
 
-20k rows will be used for the training data and 10k will be used for the valuation data. 20k instead of the entire 150k was chosen due to the limited time and computation constraints. Using 150k would take over 15hours to train but 20k took just around 30 minutes. 
+20k rows will be used for the training data and 10k will be used for the final validation data. The final testing used the validation dataset as the test data did not include layman_report translation data. However during training, 5k of the validation dataset will be used to speed up training time. 
+
+20k of training dataset was used instead of the entire 150k due to the limited time and computation constraints. Using 150k would take over 15hours to train but 20k took just around 30 minutes. Given more time or faster computational resources, the entire dataset could be used for next time. 
 
 ## Pre-Processing
 Within the dataset, every sample is cleaned from the dataset to ensure parts from the radiology_report and layman_report don't have any empty or missing fields. 
@@ -98,7 +100,7 @@ The above parameters were chosen to have a balance of training stability, comput
 The following settings were chosen for the training environment due to a number of factors such as resources available, computational efficiency and time available. The FLAN-T5-Base architecture was chosen, a 250-million-parameter sequence to sequence trainer. It had a combination of not being too weak but also not taking too many resources. Google Colab was chosen as it was the most convenient to run my code and make changes to specific models. Rangpur had issues with long queue times and network issues. Colab also had a range of GPU's to be selected and NVIDIA's A100 GPU was chosen which provided the highest memory bandwidth and tensor-core accelaration for fine-tuning a language model. 
 
 # Results
-The model was trained for 3 epochs with a learning rate of 3e-4 and a batch size of 32. It was trained on 20k samples of the dataset and 5k of the validation samples. It ran for a total of 29 minutes and 14 seconds. Then the entire validation dataset of 10k was used for the final testing which took 2hrs and 15min. The final testing used the validation dataset as the test data did not include layman_report translation data. 
+The model was trained for 3 epochs with a learning rate of 3e-4 and a batch size of 32. It was trained on 20k samples of the dataset and 5k of the validation samples. It ran for a total of 29 minutes and 14 seconds. Then the entire validation dataset of 10k was used for the final testing which took 2hrs and 15min. 
 
 |  Epoch  | Training loss | Validation Loss | Rogue1 | Rougue2 | Rouguel | Rougelsum |
 |---------|---------------|-----------------|--------|---------|---------|-----------|
@@ -163,7 +165,7 @@ The X-ray shows signs of trapped air, a flattened muscle under the lungs, and mo
 Overall, the model performed very well, as seen by the high Rouge scores and generated sample examples which closely matched the referenced samples. In the generated samples, there were minor differences, but these were primarily stylistic, just with different word ordering or vocab choices. It was able to convert both short complex radiology reports into longer simpler layman sentences and also convert long complex radiology reports into short and simple layman sentences, showing robust ability to handle different kinds of data. The slight variation shows there are things that could be improved, but nonetheless shows great readability. A Rougelsum of 0.6651 shows close to near accurate translation but could be slighlty improved. Future work could involve testing on larger and more varied datasets and have it actually be confirmed with radiologists to confirm translations are accurate not only in the dataset but also the model output. 
 
 # References
-The use of Generative AI like Gemini and ChatGPT have been used for the learning process and code inspiration of this project. Websites detailing how to fine-tune a FLAN-T5 model were also used. 
+The use of Generative AI like Gemini and ChatGPT have been used for the learning process and code inspiration of this project. Websites detailing how to fine-tune a FLAN-T5 model were also used as inspiration. References can be found below. 
 
 References
 Hebbar, S. S. (2023, November 25). T5: Overview - Sharath S Hebbar - Medium. Medium. https://medium.com/@sharathhebbar24/t5-overview-05327690fa93 \

@@ -6,6 +6,7 @@ DATA_NAME = "BioLaySumm/BioLaySumm2025-LaymanRRG-opensource-track"
 TASK_PREFIX = "Summarize this radiology report in plain language: "
 
 def remove_bad_data(sample):
+    """ Removes empty or missing sample datasets from radiology or layman report fields """
     radiology_input = sample.get("radiology_report", "")
     layman_input = sample.get("layman_report", "")
     return bool(radiology_input.strip()) and bool(layman_input.strip())

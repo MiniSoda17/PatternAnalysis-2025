@@ -3,6 +3,7 @@ import matplotlib.pyplot as plt
 import os
 import nltk
 import evaluate
+import numpy as np
 from transformers import Seq2SeqTrainingArguments, Seq2SeqTrainer
 from transformers import T5Tokenizer
 from modules import get_model_components
@@ -10,15 +11,12 @@ from dataset import load_and_tokenize_data
 
 OUTPUT_DIR = "./results-biolaysumn"
 
-# --- Global Components ---
-# Download the 'punkt' resource once for sentence segmentation
 try:
     nltk.download("punkt", quiet=True)
 except LookupError:
     # Handle the specific error you previously encountered
     nltk.download("punkt_tab", quiet=True) 
 
-# Load the ROUGE metric
 metric = evaluate.load("rouge")
 
 # --- Evaluation Function ---
@@ -64,6 +62,7 @@ def main():
 
     tokenized_dataset = load_and_tokenize_data(tokenizer)
 
+    # Training arguments to be passed into Sequence 2 Sequence
     training_args = Seq2SeqTrainingArguments(
         output_dir="./results-biolaysumm",
         eval_strategy="epoch",
@@ -79,6 +78,7 @@ def main():
         report_to="none"
     )
 
+    # Trains the model on the given parameters
     trainer = Seq2SeqTrainer(
         model=model,
         args=training_args,

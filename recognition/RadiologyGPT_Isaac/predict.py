@@ -2,6 +2,7 @@ from transformers import AutoTokenizer, AutoModelForSeq2SeqLM
 import torch, random
 from train import main
 import evaluate
+import tqdm
 
 BASE_MODEL_ID = "google/flan-t5-base"
 DRIVE_MODEL_PATH = "./results_biolaysumm"
@@ -22,10 +23,8 @@ def sample_examples(ds, n=5, seed=123):
     return [ds[i] for i in idx[:n]]
 
 def run_flan_t5(dataset, model_dir=DRIVE_MODEL_PATH, max_new_tokens=256):
-    # ---- Load tokenizer ----
+    """ Runs the pre-trained FLAN-T5 from the environment """
     tok = AutoTokenizer.from_pretrained(BASE_MODEL_ID, use_fast=True)
-
-    # ---- Load finetuned checkpoint ----
     model = AutoModelForSeq2SeqLM.from_pretrained(
         model_dir,
         torch_dtype=torch.float16,
@@ -34,7 +33,6 @@ def run_flan_t5(dataset, model_dir=DRIVE_MODEL_PATH, max_new_tokens=256):
     device = "cuda" if torch.cuda.is_available() else "cpu"
     model.to(device).eval()
 
-    # ---- Load dataset ----
     ds = dataset["validation"]
 
     preds, refs = [], []
